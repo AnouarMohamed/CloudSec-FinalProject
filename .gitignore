@@ -5,6 +5,7 @@
 *.tfvars.json
 .env
 Agents.md
+AGENTS.md
 .env.*
 *.pem
 *.key
