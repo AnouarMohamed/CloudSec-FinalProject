@@ -1,0 +1,14 @@
+Script started on 2026-11-25 09:54:27+00:00 [COMMAND="bash --noprofile --norc -i" TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="-1" LINES="-1"]
+[?2004hbash-5.3$ export PS1='[GRP01] \u@\h:\W\$ '
+[?2004l[?2004h[GRP01] anouar@morgoth:cloudkhoudali$ date -u
+[?2004lWed Nov 25 09:54:32 UTC 2026
+[?2004h[GRP01] anouar@morgoth:cloudkhoudali$ rtk proxy aws sts get-caller-identity --profile cloud
+[?2004l{
+    "UserId": "AIDATKB2DS6KD7I7V43SZ",
+    "Account": "227755136916",
+    "Arn": "arn:aws:iam::227755136916:user/anouar-admin"
+}
+[?2004h[GRP01] anouar@morgoth:cloudkhoudali$ exit
+[?2004lexit
+
+Script done on 2026-11-25 09:54:36+00:00 [COMMAND_EXIT_CODE="0"]

@@ -1,0 +1,2 @@
+{"timestamp": "2026-11-25 10:09:59,847", "filename": "aws_provider.py:1471", "level": "CRITICAL", "module": "aws_provider", "message": "NoCredentialsError[1432]: Unable to locate credentials"}
+{"timestamp": "2026-11-25 10:09:59,847", "filename": "provider.py:719", "level": "CRITICAL", "module": "provider", "message": "NoCredentialsError[383]: Unable to locate credentials"}

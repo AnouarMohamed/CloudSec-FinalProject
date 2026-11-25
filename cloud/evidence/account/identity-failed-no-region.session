@@ -1,0 +1,11 @@
+Script started on 2026-11-25 09:50:50+00:00 [COMMAND="bash --noprofile --norc -i" TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="-1" LINES="-1"]
+[?2004hbash-5.3$ export PS1='[GRP01] \u@\h:\w\$ '
+[?2004l[?2004h[GRP01] anouar@morgoth:~/Projects/cloudkhoudali$ date -u
+[?2004lWed Nov 25 09:50:57 UTC 2026
+[?2004h[GRP01] anouar@morgoth:~/Projects/cloudkhoudali$ rtk proxy aws sts get-caller-identity --profile cloud
+[?2004l
+aws: [ERROR]: An error occurred (NoRegion): You must specify a region. You can also configure your region by running "aws configure".
+[?2004h[GRP01] anouar@morgoth:~/Projects/cloudkhoudali$ exit
+[?2004lexit
+
+Script done on 2026-11-25 09:51:08+00:00 [COMMAND_EXIT_CODE="253"]

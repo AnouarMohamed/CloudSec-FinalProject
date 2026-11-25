@@ -1,0 +1,15 @@
+Script started on 2026-11-25 10:32:42+00:00 [COMMAND="bash --noprofile --norc -i" TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="-1" LINES="-1"]
+[?2004hbash-5.3$ export PS1='[GRP01] \h\$ '
+[?2004l[?2004h[GRP01] morgoth$ date -u
+[?2004lWed Nov 25 10:32:46 UTC 2026
+[?2004h[GRP01] morgoth$ rtk proxy python3 audit/summarize_prowler.py audit/prowler-initial/grp01-initial.csv
+[?2004lReport: audit/prowler-initial/grp01-initial.csv
+Finding rows: 670
+Status       CRITICAL  HIGH  MEDIUM  LOW  TOTAL
+FAIL                0   113     121  117    351
+PASS               61    83     150   15    309
+MANUAL              3     1       6    0     10
+[?2004h[GRP01] morgoth$ exit
+[?2004lexit
+
+Script done on 2026-11-25 10:32:46+00:00 [COMMAND_EXIT_CODE="0"]
