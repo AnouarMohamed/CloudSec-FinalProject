@@ -1,8 +1,8 @@
 # Evidence index
 
-Status values: **done**, **partial**, **missing**, **waiting on teammate**. Every captured command must retain its real UTC timestamp and full output. PNG captures and captions are added as generated.
+Status values: **done**, **partial**, **missing**, **waiting on teammate**. Every captured command must retain its real UTC timestamp and full output. The existing PNGs are **Freeze renderings of genuine recorded `.session` terminal output**, not screenshots taken from a GNOME terminal window. The captions identify their origin. They support the PDF's command-output evidence, but should not be presented as literal desktop screenshots.
 
-**PDF naming caveat:** the genuine captures show real hostname `morgoth` after the user-approved `[GRP01]` prompt prefix. The specification literally requires a group-named hostname in every terminal capture. Technical proof statuses below do not imply that the teacher will accept this presentation format; see `../../docs/pdf-gap-review.md`.
+**PDF naming caveat:** the genuine recordings show real hostname `morgoth` after the user-approved `[GRP01]` prompt prefix. The specification literally requires a group-named hostname in every terminal capture. Technical proof statuses below do not imply that the teacher will accept this presentation format; see `../../docs/pdf-gap-review.md`. New window screenshots are still needed for strict capture compliance.
 
 | Requirement | Acceptance criterion | Proof file | Status |
 |---|---|---|---|
