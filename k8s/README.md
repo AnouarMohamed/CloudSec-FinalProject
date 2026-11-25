@@ -28,7 +28,7 @@ The namespace also appears in `demo.yaml`, so the later apply reconciles its lab
 
 ## Proof and limits
 
-The evidence capture will show both clients calling the same web pod IP. The allowed client should receive `GRP01 web ready`; the blocked client should time out. A timeout alone can have other causes, so the comparison uses the same endpoint while the web pod is healthy, and records the installed Calico policies. The demo is local and does not claim to secure a managed cluster.
+The [network-policy capture](../cloud/evidence/k8s/network-policy.png) shows both clients calling the same healthy web pod IP. The allowed client received `GRP01 web ready`; the blocked client timed out with exit code 28. The [hardening capture](../cloud/evidence/k8s/hardening.png) shows the restricted workload settings and `kubectl auth can-i` returning `no` for Secret reads. The original `.session` files and captions are beside the PNGs. The demo is local and does not claim to secure a managed cluster.
 
 Delete local resources with `kind delete cluster --name grp01` after evidence review. This removes only the local demo cluster.
 

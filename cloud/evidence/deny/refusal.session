@@ -1,0 +1,18 @@
+Script started on 2026-11-25 15:53:26+00:00 [COMMAND="stty cols 220; bash --noprofile --norc -i" <not executed on terminal>]
+export PS1='[GRP01] \h\$ '
+date -u
+rtk proxy aws s3api list-objects-v2 --bucket cloud-docs-grp01 --profile cloud --region eu-west-3
+rtk proxy aws s3api get-bucket-policy --bucket cloud-docs-grp01 --profile cloud --region eu-west-3 --query Policy --output text
+exit
+bash-5.3$ export PS1='[GRP01] \h\$ '
+[GRP01] morgoth$ date -u
+Wed Nov 25 15:53:26 UTC 2026
+[GRP01] morgoth$ rtk proxy aws s3api list-objects-v2 --bucket cloud-docs-grp01 --profile cloud --region eu-west-3
+
+aws: [ERROR]: An error occurred (AccessDenied) when calling the ListObjectsV2 operation: User: arn:aws:iam::227755136916:root is not authorized to perform: s3:ListBucket on resource: "arn:aws:s3:::cloud-docs-grp01" with an explicit deny in a resource-based policy
+[GRP01] morgoth$ rtk proxy aws s3api get-bucket-policy --bucket cloud-docs-grp01 --profile cloud --region eu-west-3 --query Policy --output text
+{"Version":"2012-10-17","Statement":[{"Sid":"DenyProjectBucketListingForDemonstration","Effect":"Deny","Principal":"*","Action":"s3:ListBucket","Resource":"arn:aws:s3:::cloud-docs-grp01"},{"Sid":"DenyInsecureTransport","Effect":"Deny","Principal":"*","Action":"s3:*","Resource":["arn:aws:s3:::cloud-docs-grp01/*","arn:aws:s3:::cloud-docs-grp01"],"Condition":{"Bool":{"aws:SecureTransport":"false","aws:PrincipalIsAWSService":"false"}}},{"Sid":"DenyOtherAccounts","Effect":"Deny","Principal":"*","Action":"s3:*","Resource":["arn:aws:s3:::cloud-docs-grp01/*","arn:aws:s3:::cloud-docs-grp01"],"Condition":{"Bool":{"aws:PrincipalIsAWSService":"false"},"StringNotEquals":{"aws:PrincipalAccount":"227755136916"}}}]}
+[GRP01] morgoth$ exit
+exit
+
+Script done on 2026-11-25 15:53:33+00:00 [COMMAND_EXIT_CODE="0"]

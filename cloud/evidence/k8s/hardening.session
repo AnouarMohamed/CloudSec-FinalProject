@@ -1,0 +1,75 @@
+Script started on 2026-11-25 16:00:39+00:00 [COMMAND="stty cols 220; bash --noprofile --norc -i" <not executed on terminal>]
+export PS1='[GRP01] \h\$ '
+date -u
+rtk proxy kubectl -n grp01-demo get deployment grp01-web -o yaml | sed -n '30,80p'
+rtk proxy kubectl auth can-i get secrets -n grp01-demo --as system:serviceaccount:grp01-demo:grp01-web
+rtk proxy kubectl -n grp01-demo get secret grp01-demo-secret -o custom-columns=NAME:.metadata.name,TYPE:.type
+rtk proxy kubectl get namespace grp01-demo --show-labels
+exit
+bash-5.3$ export PS1='[GRP01] \h\$ '
+[GRP01] morgoth$ date -u
+Wed Nov 25 16:00:39 UTC 2026
+[GRP01] morgoth$ rtk proxy kubectl -n grp01-demo get deployment grp01-web -o yaml | sed -n '30,80p'
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - args:
+        - -listen=:5678
+        - -text=GRP01 web ready
+        env:
+        - name: DEMO_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: value
+              name: grp01-demo-secret
+        image: hashicorp/http-echo:1.0.0
+        imagePullPolicy: IfNotPresent
+        name: web
+        ports:
+        - containerPort: 5678
+          name: http
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 100m
+            memory: 64Mi
+          requests:
+            cpu: 10m
+            memory: 16Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        runAsGroup: 10001
+        runAsNonRoot: true
+        runAsUser: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccount: grp01-web
+      serviceAccountName: grp01-web
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2026-11-25T15:59:02Z"
+    lastUpdateTime: "2026-11-25T15:59:02Z"
+[GRP01] morgoth$ rtk proxy kubectl auth can-i get secrets -n grp01-demo --as system:serviceaccount:grp01-demo:grp01-web
+no
+[GRP01] morgoth$ rtk proxy kubectl -n grp01-demo get secret grp01-demo-secret -o custom-columns=NAME:.metadata.name,TYPE:.type
+NAME                TYPE
+grp01-demo-secret   Opaque
+[GRP01] morgoth$ rtk proxy kubectl get namespace grp01-demo --show-labels
+NAME         STATUS   AGE     LABELS
+grp01-demo   Active   2m22s   kubernetes.io/metadata.name=grp01-demo,pod-security.kubernetes.io/audit=restricted,pod-security.kubernetes.io/enforce=restricted,pod-security.kubernetes.io/warn=restricted
+[GRP01] morgoth$ exit
+exit
+
+Script done on 2026-11-25 16:00:40+00:00 [COMMAND_EXIT_CODE="0"]

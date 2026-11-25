@@ -19,6 +19,20 @@ resource "aws_s3_bucket_versioning" "docs" {
 }
 
 data "aws_iam_policy_document" "docs_bucket" {
+  # Bonus D: deny a harmless read action even for an otherwise authorized
+  # principal. The bucket is empty; PutBucketPolicy remains available so the
+  # policy can be revised by Terraform after the demonstration.
+  statement {
+    sid       = "DenyProjectBucketListingForDemonstration"
+    effect    = "Deny"
+    actions   = ["s3:ListBucket"]
+    resources = [aws_s3_bucket.docs.arn]
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+  }
+
   statement {
     sid     = "DenyInsecureTransport"
     effect  = "Deny"

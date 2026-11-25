@@ -13,9 +13,9 @@ ACTIONS = {
     "iam_user_hardware_mfa_enabled": "Existing `zakaria-admin`; [WAITING ON TEAMMATE: account owner to register MFA].",
     "iam_user_mfa_enabled_console_access": "Existing `zakaria-admin`; [WAITING ON TEAMMATE: account owner to register MFA].",
     "s3_account_level_public_access_blocks": "Account-level control; rule 7 approval needed, project buckets have all bucket-level blocks.",
-    "s3_bucket_shadow_resource_vulnerability": "No GRP01 bucket implicated; absent in after scan without a direct project fix.",
+    "s3_bucket_shadow_resource_vulnerability": "No GRP01 bucket implicated; finding persists in the final account scan without a direct project fix.",
     "secretsmanager_automatic_rotation_enabled": "Fictional demo secret with no consumer; rotation needs a Lambda implementation and is recorded as an exception.",
-    "secretsmanager_has_restrictive_resource_policy": "Added role-scoped resource policy with `block_public_policy=true` (`cloud/terraform/secrets-iam.tf`).",
+    "secretsmanager_has_restrictive_resource_policy": "Added role-scoped resource policy with `block_public_policy=true`; targeted scan still asks for blanket Deny (see documented exception).",
 }
 
 
