@@ -2,6 +2,8 @@
 
 Status values: **done**, **partial**, **missing**, **waiting on teammate**. Every captured command must retain its real UTC timestamp and full output. PNG captures and captions are added as generated.
 
+**PDF naming caveat:** the genuine captures show real hostname `morgoth` after the user-approved `[GRP01]` prompt prefix. The specification literally requires a group-named hostname in every terminal capture. Technical proof statuses below do not imply that the teacher will accept this presentation format; see `../../docs/pdf-gap-review.md`.
+
 | Requirement | Acceptance criterion | Proof file | Status |
 |---|---|---|---|
 | A — non-root CLI identity | STS ARN is not root | `account/identity.session`, `account/identity.png`, `account/identity.md` | done |

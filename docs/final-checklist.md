@@ -7,9 +7,10 @@
 | Secrets in repo and history | Gitleaks reported zero findings in the working tree and six then-current commits | `cloud/evidence/secrets/gitleaks.png`; rerun after this evidence-only commit for final history coverage. |
 | Ignore rules | Terraform state/plans, tfvars, `.env`, private-key files, provider cache, and generated Prowler compliance exports are ignored | `.gitignore`. |
 | Before and after audits | Both raw CSV and OCSF saved; summary and comparison saved | `audit/prowler-initial/`, `audit/prowler-final/`, `cloud/evidence/prowler/`. Initial 0 CRITICAL/113 HIGH; final 0/97 account-wide plus two targeted secret HIGH exceptions. |
-| Evidence map and captions | All claimed requirements mapped; each report figure points to a caption and raw terminal session | `cloud/evidence/evidence-index.md`, `audit/report/draft.md`. |
+| Evidence map and captions | All claimed requirements mapped; each report figure points to a caption and raw terminal session. PDF hostname rule remains at risk: PNGs show `morgoth` with a `[GRP01]` prompt prefix, rather than a group-named real hostname. | `cloud/evidence/evidence-index.md`, `audit/report/draft.md`, `docs/pdf-gap-review.md`. |
 | Budget delivery | Incomplete | Recipient `inactive`; owner must verify email link and wait for a real threshold event. |
 | Human MFA and root non-use | Incomplete | `zakaria-admin` lacks MFA: [WAITING ON TEAMMATE: account owner]. User-directed root CLI use prevents a no-root claim. |
 | Teardown | Pending explicit approval | `audit/report/teardown-plan.md`; no resource destroyed. |
+| PDF deliverables | Incomplete | Architecture dossier and consolidated 15–20 minute defense preparation are absent; audit report remains a draft with teammate placeholders. See `docs/pdf-gap-review.md`. |
 
 This checklist is a draft for Anouar to review before submission.
