@@ -1,0 +1,333 @@
+Script started on 2026-11-25 21:48:29+00:00 [COMMAND="/home/anouar/Projects/cloudkhoudali/cloud/live_ptyxis_shell.sh" TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="123" LINES="29"]
+[?2004h[GRP01] atl-cloud-GRP01$ [K[GRP01] atl-cloud-GRP01$ [K[GRP01] atl-cloud-GRP01$ [K[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:48:30 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ hostname
+[?2004latl-cloud-GRP01
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws sts get-caller-identity --profile cloud
+[?2004l{
+    "UserId": "227755136916",
+    "Account": "227755136916",
+    "Arn": "arn:aws:iam::227755136916:root"
+}
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws iam list-mfa-devices --user-name anouar-admin --profile cloud --query 'MFADevices[ *].SerialNumber' --output json
+[?2004l[
+    "arn:aws:iam::227755136916:u2f/user/anouar-admin/newdevad-4QAE3YNVYNA25C4XMVJDGS5V4I"
+]
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws iam list-mfa-devices --user-name zakaria-admin --profile cloud --query 'MFADevices [*].SerialNumber' --output json
+[?2004l[]
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:48:39 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws s3api get-public-access-block --bucket cloud-docs-grp01 --profile cloud --region e u-west-3
+[?2004l{
+    "PublicAccessBlockConfiguration": {
+        "BlockPublicAcls": true,
+        "IgnorePublicAcls": true,
+        "BlockPublicPolicy": true,
+        "RestrictPublicBuckets": true
+    }
+}
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws s3api get-bucket-encryption --bucket cloud-docs-grp01 --profile cloud --region eu- west-3 --query 'ServerSideEncryptionConfiguration.Rules[*].ApplyServerSideEncryptionByDefault.SSEAlgorithm' --output json [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Kn
+[?2004l[
+    "AES256"
+]
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws s3api get-bucket-versioning --bucket cloud-docs-grp01 --profile cloud --region eu- west-3
+[?2004l{
+    "Status": "Enabled"
+}
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:48:46 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws s3api head-bucket --bucket cloud-docs-grp01 --no-sign-request --region eu-west-3
+[?2004l
+aws: [ERROR]: An error occurred (403) when calling the HeadBucket operation: Forbidden
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:48:48 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws ec2 describe-subnets --filters Name=vpc-id,Values=vpc-0d069fce4ce5ff50a --profile  cloud --region eu-west-3 --query 'Subnets[*].[SubnetId,CidrBlock,MapPublicIpOnLaunch]' --output table
+[?2004l--------------------------------------------------------
+|                    DescribeSubnets                   |
++---------------------------+-----------------+--------+
+|  subnet-0d5373cc76702fa34 |  10.71.10.0/24  |  False |
+|  subnet-0408ffd741f2dd27f |  10.71.20.0/24  |  False |
++---------------------------+-----------------+--------+
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws ec2 describe-security-groups --filters Name=vpc-id,Values=vpc-0d069fce4ce5ff50a -- profile cloud --region eu-west-3 --query 'SecurityGroups[*].[GroupName,IpPermissions]' --output json
+[?2004l[
+    [
+        "cloud-sg-public-grp01",
+        []
+    ],
+    [
+        "default",
+        []
+    ],
+    [
+        "cloud-sg-private-grp01",
+        []
+    ]
+]
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:48:55 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws ec2 describe-route-tables --filters Name=vpc-id,Values=vpc-0d069fce4ce5ff50a --pro file cloud --region eu-west-3 --query 'RouteTables[*].{Id:RouteTableId,Routes:Routes[*].{Dest:DestinationCidrBlock,Gatewa y:GatewayId}}' --output json
+[?2004l[
+    {
+        "Id": "rtb-095e1141cfb105807",
+        "Routes": [
+            {
+                "Dest": "10.71.0.0/16",
+                "Gateway": "local"
+            }
+        ]
+    },
+    {
+        "Id": "rtb-0a64bf31d6fa6cecb",
+        "Routes": [
+            {
+                "Dest": "10.71.0.0/16",
+                "Gateway": "local"
+            },
+            {
+                "Dest": "0.0.0.0/0",
+                "Gateway": "igw-0157c4fbe0c31b717"
+            }
+        ]
+    },
+    {
+        "Id": "rtb-05dcb081c62fa8763",
+        "Routes": [
+            {
+                "Dest": "10.71.0.0/16",
+                "Gateway": "local"
+            }
+        ]
+    }
+]
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:48:58 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws cloudtrail describe-trails --trail-name-list cloud-trail-grp01 --profile cloud --r egion eu-west-3 --query 'trailList[*].[Name,IsMultiRegionTrail,IncludeGlobalServiceEvents,S3BucketName]' --output table
+[?2004l-----------------------------------------------------------------
+|                        DescribeTrails                         |
++--------------------+-------+-------+--------------------------+
+|  cloud-trail-grp01 |  True |  True |  cloud-trail-logs-grp01  |
++--------------------+-------+-------+--------------------------+
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws cloudtrail get-event-selectors --trail-name cloud-trail-grp01 --profile cloud --re gion eu-west-3 --query 'EventSelectors[*].[IncludeManagementEvents,ReadWriteType]' --output table
+[?2004l-------------------
+|GetEventSelectors|
++--------+--------+
+|  True  |  All   |
++--------+--------+
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws cloudtrail get-trail-status --name cloud-trail-grp01 --profile cloud --region eu-w est-3 --query '{Logging:IsLogging,Delivery:LatestDeliveryTime,Error:LatestDeliveryError}'
+[?2004l{
+    "Logging": true,
+    "Delivery": "2026-11-25T22:48:30.539000+01:00",
+    "Error": null
+}
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:49:05 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws s3api get-public-access-block --bucket cloud-trail-logs-grp01 --profile cloud --re gion eu-west-3
+[?2004l{
+    "PublicAccessBlockConfiguration": {
+        "BlockPublicAcls": true,
+        "IgnorePublicAcls": true,
+        "BlockPublicPolicy": true,
+        "RestrictPublicBuckets": true
+    }
+}
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws s3api get-bucket-encryption --bucket cloud-trail-logs-grp01 --profile cloud --regi on eu-west-3 --query 'ServerSideEncryptionConfiguration.Rules[*].ApplyServerSideEncryptionByDefault.SSEAlgorithm' --outpu t json
+[?2004l[
+    "AES256"
+]
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws s3api list-objects-v2 --bucket cloud-trail-logs-grp01 --max-keys 1 --profile cloud  --region eu-west-3 --query 'Contents[*].[Key,Size]' --output table
+[?2004l--------------------------------------------------
+|                  ListObjectsV2                 |
++-------------------------------------------+----+
+|  AWSLogs/227755136916/CloudTrail-Digest/  |  0 |
++-------------------------------------------+----+
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:49:12 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy python cloud/read_root_alert.py
+[?2004lMessages received: 1
+Message ID: 5b4127ef-ce71-4473-b875-9c55fb8c36cf
+Event time: 2026-11-25T10:44:25Z
+Event type: AWS API Call via CloudTrail
+Event source: aws.cloudtrail
+API action: LookupEvents
+Identity type: Root
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:49:15 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy python cloud/secret_demo.py get
+[?2004lSecret ID: arn:aws:secretsmanager:eu-west-3:227755136916:secret:cloud-app-secret-grp01-xI8sL5
+Version ID: c18431b8-3204-44e6-8b07-7512e9c39295
+Retrieval succeeded: 43 characters (value withheld)
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:49:17 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws iam get-role --role-name cloud-app-read-grp01 --profile cloud --query 'Role.Assume RolePolicyDocument' --output json
+[?2004l{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "ecs-tasks.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole",
+            "Condition": {
+                "StringEquals": {
+                    "aws:SourceAccount": "227755136916"
+                },
+                "ArnLike": {
+                    "aws:SourceArn": "arn:aws:ecs:eu-west-3:227755136916:*"
+                }
+            }
+        }
+    ]
+}
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws iam get-role-policy --role-name cloud-app-read-grp01 --policy-name cloud-app-read- grp01 --profile cloud --query PolicyDocument --output json
+[?2004l{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "s3:GetObject",
+            "Effect": "Allow",
+            "Resource": "arn:aws:s3:::cloud-docs-grp01/*",
+            "Sid": "ReadProjectDocuments"
+        },
+        {
+            "Action": "secretsmanager:GetSecretValue",
+            "Effect": "Allow",
+            "Resource": "arn:aws:secretsmanager:eu-west-3:227755136916:secret:cloud-app-secret-grp01-xI8sL5",
+            "Sid": "ReadProjectSecret"
+        }
+    ]
+}
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:49:23 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy python audit/summarize_prowler.py audit/prowler-initial/grp01-initial.csv
+[?2004lReport: audit/prowler-initial/grp01-initial.csv
+Finding rows: 670
+Status       CRITICAL  HIGH  MEDIUM  LOW  TOTAL
+FAIL                0   113     121  117    351
+PASS               61    83     150   15    309
+MANUAL              3     1       6    0     10
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy python audit/summarize_prowler.py audit/prowler-final/grp01-final-hardened.csv
+[?2004lReport: audit/prowler-final/grp01-final-hardened.csv
+Finding rows: 715
+Status       CRITICAL  HIGH  MEDIUM  LOW  TOTAL
+FAIL                0    97     128  108    333
+PASS               67   107     166   32    372
+MANUAL              3     1       6    0     10
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy python audit/summarize_prowler.py audit/prowler-final/grp01-secret-targeted.csv
+[?2004lReport: audit/prowler-final/grp01-secret-targeted.csv
+Finding rows: 2
+Status       CRITICAL  HIGH  MEDIUM  LOW  TOTAL
+FAIL                0     2       0    0      2
+PASS                0     0       0    0      0
+MANUAL              0     0       0    0      0
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:49:26 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws budgets describe-notifications-for-budget --account-id 227755136916 --budget-name  cloud-budget-grp01 --profile cloud --query 'Notifications[*].[Threshold,NotificationType,NotificationState]' --output tab le
+[?2004l--------------------------------
+|DescribeNotificationsForBudget|
++---------+------------+-------+
+|  100.0  |  ACTUAL    |  OK   |
+|  25.0   |  ACTUAL    |  OK   |
+|  50.0   |  ACTUAL    |  OK   |
++---------+------------+-------+
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws notificationscontacts list-email-contacts --profile cloud --region eu-west-3 --que ry 'emailContacts[*].[name,address,status]' --output table
+[?2004l----------------------------------------------------
+|                 ListEmailContacts                |
++-------------+------------------------+-----------+
+|  bishopgas4 |  bishopgas4@gmail.com  |  inactive |
++-------------+------------------------+-----------+
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:49:32 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws s3api list-objects-v2 --bucket cloud-docs-grp01 --profile cloud --region eu-west-3 [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K3
+[?2004l
+aws: [ERROR]: An error occurred (AccessDenied) when calling the ListObjectsV2 operation: User: arn:aws:iam::227755136916:root is not authorized to perform: s3:ListBucket on resource: "arn:aws:s3:::cloud-docs-grp01" with an explicit deny in a resource-based policy
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:49:35 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy kubectl -n grp01-demo get pods -o custom-columns=NAME:.metadata.name,IP:.status.podIP
+[?2004lNAME                         IP
+grp01-allowed                192.168.54.14
+grp01-blocked                192.168.54.11
+grp01-web-776bb9b7d7-6xvgm   192.168.54.10
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy kubectl -n grp01-demo get networkpolicy
+[?2004lNAME                 POD-SELECTOR     AGE
+grp01-allow-client   access=allowed   5h51m
+grp01-allow-web      app=grp01-web    5h51m
+grp01-default-deny   <none>           5h51m
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy kubectl -n grp01-demo exec grp01-allowed -- curl --max-time 5 -sS http://192.168.54.10 :5678
+[?2004lGRP01 web ready
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy kubectl -n grp01-demo exec grp01-blocked -- curl --max-time 5 -sS http://192.168.54.10 :5678
+[?2004lcurl: (28) Connection timed out after 5002 milliseconds
+command terminated with exit code 28
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:49:45 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy kubectl -n grp01-demo get deployment grp01-web -o json | jq '.spec.template.spec | {se rviceAccountName,automountServiceAccountToken,securityContext,container:(.containers[0] | {securityContext,resources})}'
+[?2004l{
+  "serviceAccountName": "grp01-web",
+  "automountServiceAccountToken": false,
+  "securityContext": {
+    "runAsGroup": 10001,
+    "runAsNonRoot": true,
+    "runAsUser": 10001,
+    "seccompProfile": {
+      "type": "RuntimeDefault"
+    }
+  },
+  "container": {
+    "securityContext": {
+      "allowPrivilegeEscalation": false,
+      "capabilities": {
+        "drop": [
+          "ALL"
+        ]
+      },
+      "readOnlyRootFilesystem": true
+    },
+    "resources": {
+      "limits": {
+        "cpu": "100m",
+        "memory": "64Mi"
+      },
+      "requests": {
+        "cpu": "10m",
+        "memory": "16Mi"
+      }
+    }
+  }
+}
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:49:47 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy kubectl auth can-i get secrets -n grp01-demo --as system:serviceaccount:grp01-demo:grp 01-web
+[?2004lno
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy kubectl -n grp01-demo get secret grp01-demo-secret -o custom-columns=NAME:.metadata.na me,TYPE:.type
+[?2004lNAME                TYPE
+grp01-demo-secret   Opaque
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy kubectl get namespace grp01-demo --show-labels
+[?2004lNAME         STATUS   AGE     LABELS
+grp01-demo   Active   5h51m   kubernetes.io/metadata.name=grp01-demo,pod-security.kubernetes.io/audit=restricted,pod-security.kubernetes.io/enforce=restricted,pod-security.kubernetes.io/warn=restricted
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:49:50 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy gitleaks dir . --redact --verbose
+[?2004l
+    ○
+    │╲
+    │ ○
+    ○ ░
+    ░    gitleaks
+
+9:51PM INF scanned ~258121876 bytes (258.12 MB) in 1m13.2s
+9:51PM INF no leaks found
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy gitleaks git . --redact --verbose
+[?2004l
+    ○
+    │╲
+    │ ○
+    ○ ░
+    ░    gitleaks
+
+9:52PM INF 9 commits scanned.
+9:52PM INF scanned ~59615935 bytes (59.62 MB) in 1m35.4s
+9:52PM INF no leaks found
+[?2004h[GRP01] atl-cloud-GRP01$ exit
+[?2004lexit
+
+Script done on 2026-11-25 21:52:41+00:00 [COMMAND_EXIT_CODE="0"]

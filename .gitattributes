@@ -1,0 +1,2 @@
+# Preserve control characters and CRLF exactly in raw terminal recordings.
+cloud/evidence/terminal-live/*.session -text -diff

@@ -1,0 +1,104 @@
+Script started on 2026-11-25 21:55:54+00:00 [COMMAND="/home/anouar/Projects/cloudkhoudali/cloud/live_ptyxis_shell.sh" TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="121" LINES="33"]
+[?2004h[GRP01] atl-cloud-GRP01$ [K[GRP01] atl-cloud-GRP01$ [K[GRP01] atl-cloud-GRP01$ [K[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:55:55 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws iam get-account-summary --profile cloud --query 'SummaryMap.{RootMFA:AccountMFAEna bled,RootKeys:AccountAccessKeysPresent}' --output json
+[?2004l{
+    "RootMFA": 1,
+    "RootKeys": 0
+}
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:55:58 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws ec2 describe-route-tables --filters Name=vpc-id,Values=vpc-0d069fce4ce5ff50a --pro file cloud --region eu-west-3 --query 'RouteTables[*].[RouteTableId,Associations[*].SubnetId,Routes[*].[DestinationCidrBl ock,GatewayId]]' --output text
+[?2004lrtb-095e1141cfb105807
+subnet-0408ffd741f2dd27f
+10.71.0.0/16	local
+rtb-0a64bf31d6fa6cecb
+subnet-0d5373cc76702fa34
+10.71.0.0/16	local
+0.0.0.0/0	igw-0157c4fbe0c31b717
+rtb-05dcb081c62fa8763
+10.71.0.0/16	local
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:56:02 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws iam get-role --role-name cloud-app-read-grp01 --profile cloud --query 'Role.Assume RolePolicyDocument.Statement' --output json
+[?2004l[
+    {
+        "Effect": "Allow",
+        "Principal": {
+            "Service": "ecs-tasks.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole",
+        "Condition": {
+            "StringEquals": {
+                "aws:SourceAccount": "227755136916"
+            },
+            "ArnLike": {
+                "aws:SourceArn": "arn:aws:ecs:eu-west-3:227755136916:*"
+            }
+        }
+    }
+]
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:56:05 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws iam get-role-policy --role-name cloud-app-read-grp01 --policy-name cloud-app-read- grp01 --profile cloud --query PolicyDocument --output json
+[?2004l{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "s3:GetObject",
+            "Effect": "Allow",
+            "Resource": "arn:aws:s3:::cloud-docs-grp01/*",
+            "Sid": "ReadProjectDocuments"
+        },
+        {
+            "Action": "secretsmanager:GetSecretValue",
+            "Effect": "Allow",
+            "Resource": "arn:aws:secretsmanager:eu-west-3:227755136916:secret:cloud-app-secret-grp01-xI8sL5",
+            "Sid": "ReadProjectSecret"
+        }
+    ]
+}
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:56:08 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy kubectl -n grp01-demo get deployment grp01-web -o json | jq '{pod:.spec.template.spec. securityContext,container:.spec.template.spec.containers[0].securityContext}'
+[?2004l{
+  "pod": {
+    "runAsGroup": 10001,
+    "runAsNonRoot": true,
+    "runAsUser": 10001,
+    "seccompProfile": {
+      "type": "RuntimeDefault"
+    }
+  },
+  "container": {
+    "allowPrivilegeEscalation": false,
+    "capabilities": {
+      "drop": [
+        "ALL"
+      ]
+    },
+    "readOnlyRootFilesystem": true
+  }
+}
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy kubectl -n grp01-demo get deployment grp01-web -o json | jq '.spec.template.spec.conta iners[0].resources'
+[?2004l{
+  "limits": {
+    "cpu": "100m",
+    "memory": "64Mi"
+  },
+  "requests": {
+    "cpu": "10m",
+    "memory": "16Mi"
+  }
+}
+[?2004h[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:56:11 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy aws s3api list-objects-v2 --bucket cloud-trail-logs-grp01 --prefix AWSLogs/22775513691 6/CloudTrail/eu-west-3/2026/11/25/ --max-keys 1 --profile cloud --region eu-west-3 --query 'Contents[0].{Key:Key,Size:Siz e}' --output json
+[?2004l{
+    "Key": "AWSLogs/227755136916/CloudTrail/eu-west-3/2026/11/25/227755136916_CloudTrail_eu-west-3_20261125T1040Z_SJJH5IoVwChq0lxf.json.gz",
+    "Size": 1928
+}
+[?2004h[GRP01] atl-cloud-GRP01$ exit
+[?2004lexit
+
+Script done on 2026-11-25 21:56:14+00:00 [COMMAND_EXIT_CODE="0"]

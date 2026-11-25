@@ -1,0 +1,11 @@
+Script started on 2026-11-25 21:57:00+00:00 [COMMAND="/home/anouar/Projects/cloudkhoudali/cloud/live_ptyxis_shell.sh" TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="121" LINES="33"]
+[?2004h[GRP01] atl-cloud-GRP01$ [K[GRP01] atl-cloud-GRP01$ [K[GRP01] atl-cloud-GRP01$ [K[GRP01] atl-cloud-GRP01$ [H[2J[GRP01] atl-cloud-GRP01$ date -u
+[?2004lWed Nov 25 21:57:01 UTC 2026
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy kubectl -n grp01-demo get deployment grp01-web -o json | jq -c '{pod:.spec.template.sp ec.securityContext,container:.spec.template.spec.containers[0].securityContext}'
+[?2004l{"pod":{"runAsGroup":10001,"runAsNonRoot":true,"runAsUser":10001,"seccompProfile":{"type":"RuntimeDefault"}},"container":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true}}
+[?2004h[GRP01] atl-cloud-GRP01$ rtk proxy kubectl -n grp01-demo get deployment grp01-web -o json | jq -c '.spec.template.spec.co ntainers[0].resources'
+[?2004l{"limits":{"cpu":"100m","memory":"64Mi"},"requests":{"cpu":"10m","memory":"16Mi"}}
+[?2004h[GRP01] atl-cloud-GRP01$ exit
+[?2004lexit
+
+Script done on 2026-11-25 21:57:04+00:00 [COMMAND_EXIT_CODE="0"]
