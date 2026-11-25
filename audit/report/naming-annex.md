@@ -10,11 +10,11 @@ The teacher ID provided was `01`; the required displayed form is `GRP01`, and cl
 | AD domain | [WAITING ON TEAMMATE: `grp01.atlaslog.local`] | [WAITING ON TEAMMATE: AD configuration] | waiting on teammate |
 | TLS certificate DN | [WAITING ON TEAMMATE: CN/FQDN, O=Université Mundiapolis, OU=3ALI-SEC-2627] | [WAITING ON TEAMMATE: certificate output] | waiting on teammate |
 | Human AD/system accounts | [WAITING ON TEAMMATE: `prenom.nom` account list] | [WAITING ON TEAMMATE: account listing] | waiting on teammate |
-| Current cloud CLI IAM user | `anouar-admin` (real AWS listing; **does not meet** `prenom.nom` convention) | `cloud/evidence/account/identity.txt` [PENDING] | discrepancy |
-| Project docs bucket | `cloud-docs-grp01` | `cloud/terraform/baseline.tf` output; `cloud/evidence/bucket/baseline.png` | verified |
+| Current cloud CLI IAM user | `anouar-admin` initially, then root (real STS results; **neither meets** the intended final `prenom.nom` least-privilege identity) | `cloud/evidence/account/identity.png`, `cloud/evidence/account/root-identity.png` | discrepancy |
+| Project docs bucket | `cloud-docs-grp01` | `cloud/terraform/baseline.tf`; `cloud/evidence/bucket/hardened.png` | verified |
 | Project cost budget | `cloud-budget-grp01` | `cloud/evidence/budget/notifications.png` | verified |
-| Project VPC/subnets/SGs | [PENDING: Terraform output and AWS CLI listing] | `cloud/evidence/vpc/` [PENDING] | missing |
-| Project CloudTrail/log bucket | [PENDING: Terraform output and AWS CLI listing] | `cloud/evidence/cloudtrail/` [PENDING] | missing |
-| Project IAM roles/policies | [PENDING: Terraform output and AWS CLI listing] | `cloud/evidence/iam/` [PENDING] | missing |
+| Project VPC/subnets/SGs/NACL | `cloud-vpc-grp01`; `cloud-subnet-public-grp01`; `cloud-subnet-private-grp01`; `cloud-sg-public-grp01`; `cloud-sg-private-grp01`; `cloud-sg-default-grp01`; `cloud-acl-default-grp01` | `cloud/evidence/vpc/segmentation.png`, `cloud/evidence/vpc/routes.png`, `cloud/evidence/iam/remediation.png`, `cloud/terraform/vpc.tf` | verified |
+| Project CloudTrail/log bucket and alert | `cloud-trail-grp01`; `cloud-trail-logs-grp01`; `cloud-root-usage-grp01`; `cloud-root-alerts-grp01` | `cloud/evidence/cloudtrail/config.png`, `cloud/evidence/cloudtrail/delivery.png`, `cloud/evidence/cloudtrail/alert.png` | verified |
+| Project application secret and workload role/policy | `cloud-app-secret-grp01`; `cloud-app-read-grp01` | `cloud/evidence/secrets/retrieval.png`, `cloud/evidence/iam/scoped-role.png` | verified |
 
 Existing `gridguard` and CloudFormation resources predate this project and are listed separately in the journal; they are not claimed as GRP01 deliverables.

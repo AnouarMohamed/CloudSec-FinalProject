@@ -1,0 +1,7 @@
+# CloudTrail delivery and rule-state capture
+
+- **Context:** Follow-up after the Phase B trail started, on 2026-11-25. `delivery.session` is the real terminal recording; `delivery.png` renders its full visible commands/output, `[GRP01]`, real hostname `morgoth`, and UTC time.
+- **Commands shown:** `rtk proxy aws cloudtrail get-trail-status --name cloud-trail-grp01 --profile cloud --region eu-west-3 --query '{IsLogging:IsLogging,LatestDeliveryTime:LatestDeliveryTime,LatestDeliveryError:LatestDeliveryError}'`; `rtk proxy aws s3api list-objects-v2 --bucket cloud-trail-logs-grp01 --prefix AWSLogs/227755136916/ --max-items 3 --profile cloud --region eu-west-3 --query '{Count:KeyCount,Keys:Contents[].Key}'`; and `rtk proxy aws events describe-rule --name cloud-root-usage-grp01 --profile cloud --region eu-west-3 --query '{Name:Name,State:State,EventPattern:EventPattern}'` after `date -u`.
+- **Expected:** Active trail with a successful delivery and log object; rule includes all CloudTrail management events.
+- **Actual:** `IsLogging: true`, latest delivery at `2026-11-25T11:44:15.028000+01:00` and no delivery error; at least one `CloudTrail/eu-west-3/...json.gz` object listed; rule state `ENABLED_WITH_ALL_CLOUDTRAIL_MANAGEMENT_EVENTS` with root-user pattern. Capture timestamp `Wed Nov 25 10:45:48 UTC 2026`.
+- **Interpretation:** Management logs actually reached the dedicated bucket. This capture does not by itself prove alert receipt; see `alert.png`.

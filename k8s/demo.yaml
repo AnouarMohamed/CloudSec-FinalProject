@@ -1,0 +1,202 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: grp01-demo
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: grp01-web
+  namespace: grp01-demo
+automountServiceAccountToken: false
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: grp01-client
+  namespace: grp01-demo
+automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grp01-web
+  namespace: grp01-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grp01-web
+  template:
+    metadata:
+      labels:
+        app: grp01-web
+    spec:
+      serviceAccountName: grp01-web
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: web
+          image: hashicorp/http-echo:1.0.0
+          imagePullPolicy: IfNotPresent
+          args: ["-listen=:5678", "-text=GRP01 web ready"]
+          ports:
+            - containerPort: 5678
+              name: http
+          env:
+            - name: DEMO_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: grp01-demo-secret
+                  key: value
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grp01-web
+  namespace: grp01-demo
+spec:
+  selector:
+    app: grp01-web
+  ports:
+    - name: http
+      port: 5678
+      targetPort: http
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: grp01-allowed
+  namespace: grp01-demo
+  labels:
+    app: grp01-client
+    access: allowed
+spec:
+  serviceAccountName: grp01-client
+  automountServiceAccountToken: false
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 10001
+    runAsGroup: 10001
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+    - name: curl
+      image: curlimages/curl:8.17.0
+      imagePullPolicy: IfNotPresent
+      command: ["sleep", "36000"]
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop: ["ALL"]
+      resources:
+        requests:
+          cpu: 10m
+          memory: 16Mi
+        limits:
+          cpu: 100m
+          memory: 64Mi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: grp01-blocked
+  namespace: grp01-demo
+  labels:
+    app: grp01-client
+    access: blocked
+spec:
+  serviceAccountName: grp01-client
+  automountServiceAccountToken: false
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 10001
+    runAsGroup: 10001
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+    - name: curl
+      image: curlimages/curl:8.17.0
+      imagePullPolicy: IfNotPresent
+      command: ["sleep", "36000"]
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop: ["ALL"]
+      resources:
+        requests:
+          cpu: 10m
+          memory: 16Mi
+        limits:
+          cpu: 100m
+          memory: 64Mi
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: grp01-default-deny
+  namespace: grp01-demo
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: grp01-allow-web
+  namespace: grp01-demo
+spec:
+  podSelector:
+    matchLabels:
+      app: grp01-web
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              access: allowed
+      ports:
+        - protocol: TCP
+          port: 5678
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: grp01-allow-client
+  namespace: grp01-demo
+spec:
+  podSelector:
+    matchLabels:
+      access: allowed
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: grp01-web
+      ports:
+        - protocol: TCP
+          port: 5678

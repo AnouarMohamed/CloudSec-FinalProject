@@ -1,0 +1,47 @@
+Script started on 2026-11-25 10:36:45+00:00 [COMMAND="bash --noprofile --norc -i" TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="-1" LINES="-1"]
+[?2004hbash-5.3$ export PS1='[GRP01] \h\$ '
+[?2004l[?2004h[GRP01] morgoth$ date -u
+[?2004lWed Nov 25 10:36:51 UTC 2026
+[?2004h[GRP01] morgoth$ rtk proxy aws ec2 describe-route-tables --filters Name=vpc-id,Values=vpc-0d069fce4ce5ff50a --profile cloud --region eu-west-3 --query 'RouteTables[].{Id:RouteTableId,Subnets:Associations[].SubnetId,Destinations:Routes[].DestinationCidrBlock,Gateways:Routes[].GatewayId}'
+[?2004l[
+    {
+        "Id": "rtb-095e1141cfb105807",
+        "Subnets": [
+            "subnet-0408ffd741f2dd27f"
+        ],
+        "Destinations": [
+            "10.71.0.0/16"
+        ],
+        "Gateways": [
+            "local"
+        ]
+    },
+    {
+        "Id": "rtb-0a64bf31d6fa6cecb",
+        "Subnets": [
+            "subnet-0d5373cc76702fa34"
+        ],
+        "Destinations": [
+            "10.71.0.0/16",
+            "0.0.0.0/0"
+        ],
+        "Gateways": [
+            "local",
+            "igw-0157c4fbe0c31b717"
+        ]
+    },
+    {
+        "Id": "rtb-05dcb081c62fa8763",
+        "Subnets": [],
+        "Destinations": [
+            "10.71.0.0/16"
+        ],
+        "Gateways": [
+            "local"
+        ]
+    }
+]
+[?2004h[GRP01] morgoth$ exit
+[?2004lexit
+
+Script done on 2026-11-25 10:36:53+00:00 [COMMAND_EXIT_CODE="0"]

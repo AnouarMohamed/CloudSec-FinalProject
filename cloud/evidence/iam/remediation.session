@@ -1,0 +1,65 @@
+Script started on 2026-11-25 11:09:59+00:00 [COMMAND="bash --noprofile --norc -i" <not executed on terminal>]
+export PS1='[GRP01] \h\$ '
+date -u
+rtk proxy aws iam get-role --role-name cloud-app-read-grp01 --profile cloud --query 'Role.AssumeRolePolicyDocument' --output json
+rtk proxy aws secretsmanager get-resource-policy --secret-id cloud-app-secret-grp01 --profile cloud --region eu-west-3 --query 'ResourcePolicy' --output text
+rtk proxy aws ec2 describe-network-acls --filters Name=vpc-id,Values=vpc-0d069fce4ce5ff50a --profile cloud --region eu-west-3 --query 'NetworkAcls[*].{Id:NetworkAclId,Entries:Entries[*].{Rule:RuleNumber,Egress:Egress,Action:RuleAction,Cidr:CidrBlock}}' --output json
+exit
+[?2004hbash-5.3$ export PS1='[GRP01] \h\$ '
+[?2004l[?2004h[GRP01] morgoth$ date -u
+[?2004lWed Nov 25 11:09:59 UTC 2026
+[?2004h[GRP01] morgoth$ rtk proxy aws iam get-role --role-name cloud-app-read-grp01 --profile cloud --query 'Role.AssumeRolePolicyDocument' --output json
+[?2004l{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "ec2.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole",
+            "Condition": {
+                "StringEquals": {
+                    "aws:SourceAccount": "227755136916"
+                }
+            }
+        }
+    ]
+}
+[?2004h[GRP01] morgoth$ rtk proxy aws secretsmanager get-resource-policy --secret-id cloud-app-secret-grp01 --profile cloud --region eu-west-3 --query 'ResourcePolicy' --output text
+[?2004l{
+  "Version" : "2012-10-17",
+  "Statement" : [ {
+    "Sid" : "AllowProjectWorkloadRead",
+    "Effect" : "Allow",
+    "Principal" : {
+      "AWS" : "arn:aws:iam::227755136916:role/cloud-app-read-grp01"
+    },
+    "Action" : "secretsmanager:GetSecretValue",
+    "Resource" : "arn:aws:secretsmanager:eu-west-3:227755136916:secret:cloud-app-secret-grp01-xI8sL5"
+  } ]
+}
+[?2004h[GRP01] morgoth$ rtk proxy aws ec2 describe-network-acls --filters Name=vpc-id,Values=vpc-0d069fce4ce5ff50a --profile cloud --region eu-west-3 --query 'NetworkAcls[*].{Id:NetworkAclId,Entries:Entries[*].{Rule:RuleNumber,Egress:Egress,Action:RuleAction,Cidr:CidrBlock}}' --output json
+[?2004l[
+    {
+        "Id": "acl-01ce0f4ca6b243df6",
+        "Entries": [
+            {
+                "Rule": 32767,
+                "Egress": true,
+                "Action": "deny",
+                "Cidr": "0.0.0.0/0"
+            },
+            {
+                "Rule": 32767,
+                "Egress": false,
+                "Action": "deny",
+                "Cidr": "0.0.0.0/0"
+            }
+        ]
+    }
+]
+[?2004h[GRP01] morgoth$ exit
+[?2004lexit
+
+Script done on 2026-11-25 11:10:03+00:00 [COMMAND_EXIT_CODE="0"]

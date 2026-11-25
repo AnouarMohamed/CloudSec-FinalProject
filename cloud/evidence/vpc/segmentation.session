@@ -1,0 +1,74 @@
+Script started on 2026-11-25 10:36:20+00:00 [COMMAND="bash --noprofile --norc -i" TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="-1" LINES="-1"]
+[?2004hbash-5.3$ export PS1='[GRP01] \h\$ '
+[?2004l[?2004h[GRP01] morgoth$ date -u
+[?2004lWed Nov 25 10:36:26 UTC 2026
+[?2004h[GRP01] morgoth$ rtk proxy aws ec2 describe-subnets --filters Name=vpc-id,Values=vpc-0d069fce4ce5ff50a --profile cloud --region eu-west-3 --query 'Subnets[].{Id:SubnetId,Cidr:CidrBlock,PublicIp:MapPublicIpOnLaunch,Name:Tags[?Key==`Name`].Value|[0]}'
+[?2004l[
+    {
+        "Id": "subnet-0d5373cc76702fa34",
+        "Cidr": "10.71.10.0/24",
+        "PublicIp": false,
+        "Name": "cloud-subnet-public-grp01"
+    },
+    {
+        "Id": "subnet-0408ffd741f2dd27f",
+        "Cidr": "10.71.20.0/24",
+        "PublicIp": false,
+        "Name": "cloud-subnet-private-grp01"
+    }
+]
+[?2004h[GRP01] morgoth$ rtk proxy aws ec2 describe-security-groups --filters Name=vpc-id,Values=vpc-0d069fce4ce5ff50a --profile cloud --region eu-west-3 --query 'SecurityGroups[].{Name:GroupName,Id:GroupId,Ingress:IpPermissions,Egress:IpPermissionsEgress}'
+[?2004l[
+    {
+        "Name": "cloud-sg-public-grp01",
+        "Id": "sg-002ddb2921cf50f5f",
+        "Ingress": [],
+        "Egress": [
+            {
+                "IpProtocol": "tcp",
+                "FromPort": 443,
+                "ToPort": 443,
+                "UserIdGroupPairs": [],
+                "IpRanges": [
+                    {
+                        "Description": "Project VPC HTTPS only",
+                        "CidrIp": "10.71.0.0/16"
+                    }
+                ],
+                "Ipv6Ranges": [],
+                "PrefixListIds": []
+            }
+        ]
+    },
+    {
+        "Name": "default",
+        "Id": "sg-0d6921a303019507a",
+        "Ingress": [],
+        "Egress": []
+    },
+    {
+        "Name": "cloud-sg-private-grp01",
+        "Id": "sg-02c83823d6fa80538",
+        "Ingress": [],
+        "Egress": [
+            {
+                "IpProtocol": "tcp",
+                "FromPort": 443,
+                "ToPort": 443,
+                "UserIdGroupPairs": [],
+                "IpRanges": [
+                    {
+                        "Description": "Project VPC HTTPS only",
+                        "CidrIp": "10.71.0.0/16"
+                    }
+                ],
+                "Ipv6Ranges": [],
+                "PrefixListIds": []
+            }
+        ]
+    }
+]
+[?2004h[GRP01] morgoth$ exit
+[?2004lexit
+
+Script done on 2026-11-25 10:36:30+00:00 [COMMAND_EXIT_CODE="0"]

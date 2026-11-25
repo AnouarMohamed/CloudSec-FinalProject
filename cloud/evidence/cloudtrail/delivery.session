@@ -1,0 +1,29 @@
+Script started on 2026-11-25 10:45:42+00:00 [COMMAND="bash --noprofile --norc -i" TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="-1" LINES="-1"]
+[?2004hbash-5.3$ export PS1='[GRP01] \h\$ '
+[?2004l[?2004h[GRP01] morgoth$ date -u
+[?2004lWed Nov 25 10:45:48 UTC 2026
+[?2004h[GRP01] morgoth$ rtk proxy aws cloudtrail get-trail-status --name cloud-trail-grp01 --profile cloud --region eu-west-3 --query '{IsLogging:IsLogging,LatestDeliveryTime:LatestDeliveryTime,LatestDeliveryError:LatestDeliveryError}'
+[?2004l{
+    "IsLogging": true,
+    "LatestDeliveryTime": "2026-11-25T11:44:15.028000+01:00",
+    "LatestDeliveryError": null
+}
+[?2004h[GRP01] morgoth$ rtk proxy aws s3api list-objects-v2 --bucket cloud-trail-logs-grp01 --prefix AWSLogs/227755136916/ --max-items 3 --profile cloud --region eu-west-3 --query '{Count:KeyCount,Keys:Contents[].Key}'
+[?2004l{
+    "Count": null,
+    "Keys": [
+        "AWSLogs/227755136916/CloudTrail-Digest/",
+        "AWSLogs/227755136916/CloudTrail/",
+        "AWSLogs/227755136916/CloudTrail/eu-west-3/2026/11/25/227755136916_CloudTrail_eu-west-3_20261125T1040Z_SJJH5IoVwChq0lxf.json.gz"
+    ]
+}
+[?2004h[GRP01] morgoth$ rtk proxy aws events describe-rule --name cloud-root-usage-grp01 --profile cloud --region eu-west-3 --query '{Name:Name,State:State,EventPattern:EventPattern}'
+[?2004l{
+    "Name": "cloud-root-usage-grp01",
+    "State": "ENABLED_WITH_ALL_CLOUDTRAIL_MANAGEMENT_EVENTS",
+    "EventPattern": "{\"detail\":{\"userIdentity\":{\"type\":[\"Root\"]}},\"detail-type\":[\"AWS API Call via CloudTrail\"]}"
+}
+[?2004h[GRP01] morgoth$ exit
+[?2004lexit
+
+Script done on 2026-11-25 10:45:53+00:00 [COMMAND_EXIT_CODE="0"]

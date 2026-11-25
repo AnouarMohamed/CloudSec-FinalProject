@@ -1,0 +1,20 @@
+Script started on 2026-11-25 10:46:30+00:00 [COMMAND="bash --noprofile --norc -i" TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="-1" LINES="-1"]
+[?2004hbash-5.3$ export PS1='[GRP01] \h\$ '
+[?2004l[?2004h[GRP01] morgoth$ date -u
+[?2004lWed Nov 25 10:46:35 UTC 2026
+[?2004h[GRP01] morgoth$ rtk proxy aws ec2 describe-vpcs --vpc-ids vpc-0d069fce4ce5ff50a --profile cloud --region eu-west-3 --query 'Vpcs[].VpcId'
+[?2004l[
+    "vpc-0d069fce4ce5ff50a"
+]
+[?2004h[GRP01] morgoth$ rtk proxy python3 cloud/read_root_alert.py
+[?2004lMessages received: 1
+Message ID: 5b4127ef-ce71-4473-b875-9c55fb8c36cf
+Event time: 2026-11-25T10:44:25Z
+Event type: AWS API Call via CloudTrail
+Event source: aws.cloudtrail
+API action: LookupEvents
+Identity type: Root
+[?2004h[GRP01] morgoth$ exit
+[?2004lexit
+
+Script done on 2026-11-25 10:46:38+00:00 [COMMAND_EXIT_CODE="0"]

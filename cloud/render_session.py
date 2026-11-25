@@ -26,7 +26,7 @@ def main() -> None:
         normalized.write("\n".join(lines).rstrip() + "\n")
         normalized.flush()
         subprocess.run(
-            ["freeze", normalized.name, "-o", sys.argv[2], "--width", "1500", "--font.size", "19", "--padding", "30", "--margin", "0"],
+            ["freeze", normalized.name, "-o", sys.argv[2], "--width", "1500", "--wrap", "110", "--font.size", "19", "--padding", "30", "--margin", "0"],
             check=True,
         )
 
