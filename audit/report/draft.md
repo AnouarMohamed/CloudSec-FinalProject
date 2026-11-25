@@ -60,6 +60,8 @@
 
 **Figure 6.10 — Local Kubernetes workload controls.** Context: same kind cluster. Commands: `kubectl get deployment -o yaml`, `kubectl auth can-i`, Secret metadata listing, and namespace label listing. Expected: restricted pod security, bounded resources, no Secret-reading API permission, and no committed secret value. Actual: non-root UID 10001, read-only root filesystem, dropped capabilities, `RuntimeDefault` seccomp, requests/limits, `can-i` returned `no`, runtime Secret exists, and `restricted` namespace labels are active. Interpretation: local workload hardening is configured and observed; it is not a managed-cluster claim. Proof: [hardening.png](../../cloud/evidence/k8s/hardening.png) and [caption](../../cloud/evidence/k8s/hardening.md).
 
+**Figure 6.11 — Repo and Git history secrets scan.** Context: post-implementation Gitleaks scan on 2026-11-25. Commands: `gitleaks dir . --redact --verbose` and `gitleaks git . --redact --verbose`. Expected: zero detected secrets. Actual: `no leaks found` in approximately 258.08 MB of current files and 6 commits/about 59.60 MB of Git history. Interpretation: Gitleaks found no matching pattern at scan time; this is detector evidence, not a mathematical guarantee. Proof: [gitleaks.png](../../cloud/evidence/secrets/gitleaks.png) and [caption](../../cloud/evidence/secrets/gitleaks.md).
+
 ### Figure caption template
 
 **Figure N — [title].** Context: [where and when]. Command/configuration: `[exact command or setting]`. Expected: [acceptance criterion]. Actual: [verbatim result summary supported by raw evidence]. Interpretation: [what this proves and any limit]. Source: `[proof file]`.
@@ -71,5 +73,8 @@
 - [AWS IAM root best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html).
 - [CIS AWS Foundations Benchmark](https://www.cisecurity.org/benchmark/amazon_web_services).
 - [AWS Budgets email verification](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-email-recipients.html).
+- [Kubernetes NetworkPolicy](https://kubernetes.io/docs/concepts/services-networking/network-policies/).
+- [Kubernetes Pod Security Standards](https://kubernetes.io/docs/concepts/security/pod-security-standards/).
+- [Calico on kind](https://docs.tigera.io/calico/latest/getting-started/kubernetes/kind).
 
 The report text is a draft. No teammate result or unrun command is asserted as fact.
